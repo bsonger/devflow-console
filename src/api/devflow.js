@@ -36,7 +36,7 @@ export const initApiClient = async () => {
 
   if (!baseURL) {
     console.warn('未读取到配置文件，使用默认 URL')
-    baseURL = 'http://localhost:3000/api/v1'
+    baseURL = 'https://devflow.bei.com:30000/api/v1'
   }
 
   apiClient.defaults.baseURL = baseURL
