@@ -2,7 +2,7 @@ import axios from 'axios'
 import yaml from 'js-yaml'
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000/api/v1', // 默认 baseURL
+  baseURL: '"http://devflow.app.svc.cluster.local:8080/api/v1"', // 默认 baseURL
   timeout: 10000,
   headers: { Accept: 'application/json' },
 })
