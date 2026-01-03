@@ -39,7 +39,7 @@ export default function Applications() {
   const handleBuildManifest = async (application_id) => {
     setBtnLoading((prev) => ({ ...prev, [application_id]: true }))
     try {
-      const res = await axios.post('https://devflow.bei.com:30000/api/v1/manifests', {
+      const res = await axios.post('https://devflow.bei.com:32000/api/v1/manifests', {
         application_id,
       })
       message.success('Manifest 构建请求已发送')

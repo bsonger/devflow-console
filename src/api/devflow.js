@@ -2,7 +2,7 @@ import axios from 'axios'
 import yaml from 'js-yaml'
 
 const apiClient = axios.create({
-  baseURL: "https://devflow.bei.com:30000/api/v1", // 默认 baseURL
+  baseURL: "https://devflow.bei.com:32000/api/v1", // 默认 baseURL
   timeout: 10000,
   headers: { Accept: 'application/json' },
 })
@@ -36,7 +36,7 @@ export const initApiClient = async () => {
 
   if (!baseURL) {
     console.warn('未读取到配置文件，使用默认 URL')
-    baseURL = 'https://devflow.bei.com:30000/api/v1'
+    baseURL = 'https://devflow.bei.com:32000/api/v1'
   }
 
   apiClient.defaults.baseURL = baseURL
