@@ -43,7 +43,7 @@ export default function ManifestsTable() {
     const key = manifest_id + type
     setBtnLoading((prev) => ({ ...prev, [key]: true }))
     try {
-      const res = await axios.post('https://devflow.bei.com:32000/api/v1/jobs', {
+      const res = await axios.post('https://devflow.bei.com/api/v1/jobs', {
         manifest_id,
         type,
       })
