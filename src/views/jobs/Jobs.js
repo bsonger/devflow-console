@@ -10,8 +10,9 @@ import {
   CTableBody,
   CTableDataCell,
   CBadge,
+  CSpinner,
 } from '@coreui/react'
-import { getJobs } from '../../api/devflow' // 接口方法
+import { getJobs } from '../../api/devflow'
 import moment from 'moment'
 
 const statusColor = {
@@ -28,60 +29,60 @@ export default function JobsTable() {
 
   useEffect(() => {
     getJobs()
-      .then((res) => {
-        if (Array.isArray(res.data)) {
-          setJobs(res.data)
-        } else {
-          console.warn('接口返回数据不是数组:', res.data)
-          setJobs([])
-        }
-      })
-      .catch((err) => console.error('获取 Jobs 列表失败', err))
-      .finally(() => setLoading(false))
+        .then((data) => {
+          setJobs(Array.isArray(data) ? data : [])
+        })
+        .finally(() => setLoading(false))
   }, [])
 
   return (
-    <CCard>
-      <CCardHeader>Jobs</CCardHeader>
-      <CCardBody>
-        <CTable hover responsive>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell>Name</CTableHeaderCell>
-              <CTableHeaderCell>Application</CTableHeaderCell>
-              <CTableHeaderCell>Manifest</CTableHeaderCell>
-              <CTableHeaderCell>Type</CTableHeaderCell>
-              <CTableHeaderCell>Status</CTableHeaderCell>
-              <CTableHeaderCell>Created At</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {jobs.length === 0 && !loading && (
-              <CTableRow>
-                <CTableDataCell colSpan={6} className="text-center">
-                  No Jobs Found
-                </CTableDataCell>
-              </CTableRow>
-            )}
-            {jobs.map((job) => (
-              <CTableRow key={job.id}>
-                <CTableDataCell>{job.manifest_name}</CTableDataCell>
-                <CTableDataCell>{job.application_name || '-'}</CTableDataCell>
-                <CTableDataCell>{job.manifest_id || '-'}</CTableDataCell>
-                <CTableDataCell>{job.type || '-'}</CTableDataCell>
-                <CTableDataCell>
-                  <CBadge color={statusColor[job.status] || 'secondary'}>
-                    {job.status || '-'}
-                  </CBadge>
-                </CTableDataCell>
-                <CTableDataCell>
-                  {job.created_at ? moment(job.created_at).format('YYYY-MM-DD HH:mm:ss') : '-'}
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
-      </CCardBody>
-    </CCard>
+      <CCard className="mb-4">
+        <CCardHeader>
+          <strong>Jobs Dashboard</strong>
+        </CCardHeader>
+        <CCardBody>
+          {loading ? (
+              <div style={{ textAlign: 'center', padding: 20 }}>
+                <CSpinner component="span" size="sm" aria-hidden="true" />
+                <span style={{ marginLeft: 8 }}>Loading...</span>
+              </div>
+          ) : jobs.length === 0 ? (
+              <p style={{ textAlign: 'center' }}>暂无 Job 数据</p>
+          ) : (
+              <CTable hover responsive>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>Id</CTableHeaderCell>
+                    <CTableHeaderCell>Application</CTableHeaderCell>
+                    <CTableHeaderCell>Manifest</CTableHeaderCell>
+                    <CTableHeaderCell>Type</CTableHeaderCell>
+                    <CTableHeaderCell>Status</CTableHeaderCell>
+                    <CTableHeaderCell>Created At</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {jobs.map((job) => (
+                      <CTableRow key={job.id}>
+                        <CTableDataCell>{job.id}</CTableDataCell>
+                        <CTableDataCell>{job.application_name || '-'}</CTableDataCell>
+                        <CTableDataCell>{job.manifest_name || '-'}</CTableDataCell>
+                        <CTableDataCell>{job.type || '-'}</CTableDataCell>
+                        <CTableDataCell>
+                          <CBadge color={statusColor[job.status] || 'secondary'}>
+                            {job.status || '-'}
+                          </CBadge>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {job.created_at
+                              ? moment(job.created_at).format('YYYY-MM-DD HH:mm:ss')
+                              : '-'}
+                        </CTableDataCell>
+                      </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+          )}
+        </CCardBody>
+      </CCard>
   )
 }
