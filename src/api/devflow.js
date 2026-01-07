@@ -96,5 +96,6 @@ export const getApplications = () => apiClient.get('/applications')
 export const getManifests = () => apiClient.get('/manifests')
 export const postManifests = (data) => apiClient.post('/manifests', data)
 export const postJobs = (data) => apiClient.post('/jobs', data)
+export const getManifestById = (id) => apiClient.get(`/manifests/${id}`)
 
 export default apiClient
