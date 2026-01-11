@@ -1,19 +1,20 @@
+// pages/Applications.jsx
 import React, { useEffect, useState } from 'react'
 import { Table, Spin, Button, message } from 'antd'
 import moment from 'moment'
 import { getApplications, postManifests } from '../../api/devflow'
+import { useNavigate } from 'react-router-dom'
 
 export default function Applications() {
   const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
   const [btnLoading, setBtnLoading] = useState({})
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     getApplications()
-        .then((data) => {
-          // data 已经是后端返回的数据
-          setApplications(Array.isArray(data) ? data : [])
-        })
+        .then((data) => setApplications(Array.isArray(data) ? data : []))
         .finally(() => setLoading(false))
   }, [])
 
@@ -32,6 +33,11 @@ export default function Applications() {
       title: 'Id',
       dataIndex: 'id',
       key: 'id',
+      render: (id) => (
+          <Button type="link" onClick={() => navigate(`/applications/${id}`)} style={{ padding: 0 }}>
+            {id}
+          </Button>
+      ),
     },
     {
       title: '名称',
@@ -61,16 +67,8 @@ export default function Applications() {
       title: '创建时间',
       dataIndex: 'created_at',
       key: 'created_at',
-      render: (time) =>
-          time ? moment(time).format('YYYY-MM-DD HH:mm:ss') : '-',
+      render: (time) => (time ? moment(time).format('YYYY-MM-DD HH:mm:ss') : '-'),
     },
-    // {
-    //   title: '更新时间',
-    //   dataIndex: 'updated_at',
-    //   key: 'updated_at',
-    //   render: (time) =>
-    //       time ? moment(time).format('YYYY-MM-DD HH:mm:ss') : '-',
-    // },
     {
       title: '操作',
       key: 'action',
@@ -100,7 +98,7 @@ export default function Applications() {
                 columns={columns}
                 dataSource={applications}
                 rowKey="id"
-                pagination={{ pageSize: 5 }}
+                pagination={false} // 去掉分页
             />
         )}
       </div>

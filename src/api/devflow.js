@@ -93,6 +93,8 @@ export const initApiClient = async () => {
 /* ================= API 方法 ================= */
 export const getJobs = () => apiClient.get('/jobs')
 export const getApplications = () => apiClient.get('/applications')
+export const getApplicationsById = (id) => apiClient.get(`/applications/${id}`)
+export const putApplication = (id, data) => apiClient.put(`/applications/${id}`, data)
 export const getManifests = () => apiClient.get('/manifests')
 export const postManifests = (data) => apiClient.post('/manifests', data)
 export const postJobs = (data) => apiClient.post('/jobs', data)
